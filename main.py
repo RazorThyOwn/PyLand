@@ -44,6 +44,21 @@ def world_genIslands(w_size, world, num, value):
 
         genEllipse(w_size,world,islandX,islandY,height,width, 'x')
 
+def world_genForests(w_size, world, numbers):
+    for x in xrange(0,numbers):
+
+        xVal = 0
+        yVal = 0
+
+        while (world[xVal][yVal] != 'x'):
+            xVal = rand.randint(0,w_size - 1)
+            yVal = rand.randint(0,w_size - 1)
+
+        height = rand.randint(0, w_size / 5) + w_size / 10
+        width = rand.randint(0, w_size / 5) + w_size / 10
+
+        genTargetEllipse(w_size, world, xVal, yVal, height, width, 'f', 'x')
+
 def world_randomReplace(w_size, world, targetValue, replaceValue, percent):
     for x in xrange(0, w_size):
         for y in xrange(0, w_size):
@@ -103,8 +118,8 @@ def genTargetEllipse(w_size, world, x, y, height, width, value, targetVal):
                 ## Finally, ensure we are within range...
                 if xv >= 0 and xv < w_size and yv >= 0 and yv < w_size:
                     ## Finally, check if it contains the correct values
-                    value = world[xv][yv]
-                    if (value == targetVal):
+                    valueCheck = world[xv][yv]
+                    if (valueCheck == targetVal):
                         world[xv][yv] = value
 
 def checkNeighbors(x,y,world,value,w_size):
@@ -130,7 +145,7 @@ def exportWorld(w_size, world):
             if world[x][y] == 'x':
                 im.putpixel((x,y),(50,180,50))
             if world[x][y] == 'f':
-                im.putpixel((x,y),(85,140,50))
+                im.putpixel((x,y),(50,100,30))
 
     im.save("output.jpg")
 
@@ -140,6 +155,7 @@ def main():
     world_genBlank(size, world, 'w')
     world_genIslands(size,world,10,'x')
     world_genErodedShore(size, world, 3)
+    world_genForests(size, world, 5)
     exportWorld(size, world)
 
 main()
